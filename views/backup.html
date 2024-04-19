@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Backup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+      .container {
+            width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Local Backup</h2>
+        <form action="/backup" method="post">
+            <label for="backup_type">Backup Type:</label>
+            <select id="backup_type" name="backup_type">
+                <option value="full">Full Backup</option>
+                <option value="incremental">Incremental Backup</option>
+            </select>
+            
+
+
+            <input type="submit" value="Create Backup">
+        </form>
+        <h2>Backup History</h2>
+        <table class="table">
+            <tr>
+                <th>Backup Date</th>
+                <th>Backup Type</th>
+                <th>Actions</th>
+            </tr>
+            {{ range.backups }}
+            <tr>
+                <td>{{.BackupDate }}</td>
+                <td>{{.BackupType }}</td>
+                <td>
+                    <a href="/backup/download/{{.ID }}">Download</a>
+                    <a href="/backup/delete/{{.ID }}">Delete</a>
+                </td>
+            </tr>
+            {{ end }}
+        </table>
+    </div>
+</body>
+</html>

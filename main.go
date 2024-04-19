@@ -2,106 +2,36 @@ package main
 
 import (
     "database/sql"
-    "encoding/gob"
     "fmt"
     "html/template"
-    "log"
     "net/http"
-    "os"
-    "path/filepath"
+
+    "golang.org/x/crypto/bcrypt"
 
     "github.com/gorilla/sessions"
-    "golang.org/x/crypto/bcrypt"
-    "gorm.io/driver/postgres"
     "gorm.io/gorm"
+
+    "webhostingpanel/config"
+    "webhostingpanel/controllers"
+    "webhostingpanel/models"
 )
 
 var (
     db  *gorm.DB
-    err error
-    store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_SECRET")))
     tmpl *template.Template
+    store = sessions.NewCookieStore([]byte("secret"))
 )
 
-type User struct {
-    gorm.Model
-    Username string `gorm:"uniqueIndex"`
-    Password string
-}
-
-type Domain struct {
-    gorm.Model
-    UserID  uint
-    User    User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-    Domain string
-}
-
-type Subdomain struct {
-    gorm.Model
-    UserID  uint
-    User    User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-    Subdomain string
-}
-
-type FTPAccount struct {
-    gorm.Model
-    UserID  uint
-    User    User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-    Username string
-    Password string
-}
-
-type MySQLDatabase struct {
-    gorm.Model
-    UserID  uint
-    User    User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-    Database string
-    Username string
-    Password string
-}
-
-type Backup struct {
-    gorm.Model
-    UserID  uint
-    User    User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-    BackupDate string
-    BackupType string
-}
-
-type SSLCertificate struct {
-    gorm.Model
-    UserID  uint
-    User    User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-    Domain string
-    SSLStatus string
-}
-
-type WordPressInstallation struct {
-    gorm.Model
-    UserID  uint
-    User    User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-    Domain string
-    InstallationStatus string
-}
-
 func main() {
-    // Initialize database connection
-    dsn := os.Getenv("DATABASE_URL")
-    db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+    var err error
+    db, err = config.ConnectDB()
     if err!= nil {
-        log.Fatal(err)
+        fmt.Println(err)
+        return
     }
 
-    // Migrate database schema
-    db.AutoMigrate(&User{}, &Domain{}, &Subdomain{}, &FTPAccount{}, &MySQLDatabase{}, &Backup{}, &SSLCertificate{}, &WordPressInstallation{})
-
-    // Initialize template engine
     tmpl = template.Must(template.New("").Funcs(template.FuncMap{}).ParseGlob("views/*.html"))
 
-    // Initialize session store
-    gob.Register(map[string]interface{}{})
-
-    // Define routes
     http.HandleFunc("/", index)
     http.HandleFunc("/login", login)
     http.HandleFunc("/panel", panel)
@@ -113,7 +43,6 @@ func main() {
     http.HandleFunc("/letsencrypt", letsencrypt)
     http.HandleFunc("/wordpress", wordpress)
 
-    // Start server
     fmt.Println("Server started on port 8080")
     http.ListenAndServe(":8080", nil)
 }

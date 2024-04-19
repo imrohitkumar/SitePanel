@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MySQL Database Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+       .container {
+            width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+       .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+       .table th,.table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>MySQL Database Management</h2>
+        <table class="table">
+            <tr>
+                <th>Database</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Actions</th>
+            </tr>
+            {{ range.databases }}
+            <tr>
+                <td>{{.Database }}</td>
+                <td>{{.Username }}</td>
+                <td>{{.Password }}</td>
+                <td>
+                    <a href="/mysql/edit/{{.ID }}">Edit</a>
+                    <a href="/mysql/delete/{{.ID }}">Delete</a>
+                </td>
+            </tr>
+            {{ end }}
+        </table>
+        <a href="/mysql/add" class="btn">Add New MySQL Database</a>
+    </div>
+</body>
+</html>

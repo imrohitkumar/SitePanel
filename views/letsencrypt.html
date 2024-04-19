@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Let's Encrypt SSL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+      .container {
+            width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Let's Encrypt SSL</h2>
+        <form action="/letsencrypt" method="post">
+            <label for="domain">Domain:</label>
+            <input type="text" id="domain" name="domain">
+            
+
+
+            <input type="submit" value="Get SSL Certificate">
+        </form>
+        <h2>SSL Certificate Status</h2>
+        <table class="table">
+            <tr>
+                <th>Domain</th>
+                <th>SSL Status</th>
+                <th>Actions</th>
+            </tr>
+            {{ range.sslCertificates }}
+            <tr>
+                <td>{{.Domain }}</td>
+                <td>{{.SSLStatus }}</td>
+                <td>
+                    <a href="/letsencrypt/renew/{{.ID }}">Renew</a>
+                    <a href="/letsencrypt/delete/{{.ID }}">Delete</a>
+                </td>
+            </tr>
+            {{ end }}
+        </table>
+    </div>
+</body>
+</html>

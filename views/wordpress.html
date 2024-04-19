@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>One-Click WordPress Installation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+      .container {
+            width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>One-Click WordPress Installation</h2>
+        <form action="/wordpress" method="post">
+            <label for="domain">Domain:</label>
+            <input type="text" id="domain" name="domain">
+            
+
+
+            <input type="submit" value="Install WordPress">
+        </form>
+        <h2>WordPress Installation Status</h2>
+        <table class="table">
+            <tr>
+                <th>Domain</th>
+                <th>Installation Status</th>
+                <th>Actions</th>
+            </tr>
+            {{ range.wordpressInstallations }}
+            <tr>
+                <td>{{.Domain }}</td>
+                <td>{{.InstallationStatus }}</td>
+                <td>
+                    <a href="/wordpress/configure/{{.ID }}">Configure</a>
+                    <a href="/wordpress/delete/{{.ID }}">Delete</a>
+                </td>
+            </tr>
+            {{ end }}
+        </table>
+    </div>
+</body>
+</html>

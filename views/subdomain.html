@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subdomain Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+       .container {
+            width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+       .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+       .table th,.table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Subdomain Management</h2>
+        <table class="table">
+            <tr>
+                <th>Subdomain</th>
+                <th>Actions</th>
+            </tr>
+            {{ range.subdomains }}
+            <tr>
+                <td>{{.Subdomain }}</td>
+                <td>
+                    <a href="/subdomain/edit/{{.ID }}">Edit</a>
+                    <a href="/subdomain/delete/{{.ID }}">Delete</a>
+                </td>
+            </tr>
+            {{ end }}
+        </table>
+        <a href="/subdomain/add" class="btn">Add New Subdomain</a>
+    </div>
+</body>
+</html>
