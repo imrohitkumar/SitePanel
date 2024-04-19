@@ -1,0 +1,12 @@
+{
+  "db_user": "your_db_user",
+  "db_pass": "your_db_pass",
+  "db_name": "your_db_name",
+  "db_host": "localhost",
+  "db_port": 5432,
+  "ftp_host": "localhost",
+  "ftp_port": 21,
+  "ftp_user": "your_ftp_user",
+  "ftp_pass": "your_ftp_pass",
+  "lets_encrypt_email": "your_email@example.com"
+}
