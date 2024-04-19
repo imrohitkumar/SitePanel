@@ -1,4 +1,4 @@
-# SitePanel: A Web Hosting Panel
+# SitePanel: A FreeBSD Hosting Panel
 =====================================
 
 ## Features
